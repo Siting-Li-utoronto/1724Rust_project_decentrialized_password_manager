@@ -2,6 +2,7 @@ use diesel::prelude::*;
 use diesel::sqlite::SqliteConnection;
 use crate::schema::passwords; // Import the schema module
 use crate::schema::passwords::dsl as passwords_dsl; // Alias the DSL for operations
+use std::env;
 
 #[derive(Queryable)]
 pub struct Password {
@@ -19,8 +20,9 @@ pub struct NewPassword<'a> {
 
 /// Establishes a connection to the SQLite database.
 pub fn establish_connection() -> SqliteConnection {
-    SqliteConnection::establish("passwords.db")
-        .expect("Error connecting to the database")
+    let db_url = env::var("DATABASE_URL").unwrap_or_else(|_| "passwords.db".to_string());
+    SqliteConnection::establish(&db_url)
+        .expect(&format!("Error connecting to {}", db_url))
 }
 
 /// Creates the `passwords` table if it does not already exist.
@@ -92,3 +94,137 @@ pub fn get_password(title: &str) -> Option<String> {
         .optional()
         .expect("Failed to retrieve password")
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::env;
+    use std::fs;
+
+    /// Setup: Configure the test environment with an isolated test database.
+    fn setup_test_database() {
+        // Set a separate database for testing
+        env::set_var("DATABASE_URL", "test_passwords.db");
+
+        // Clean up any existing test database
+        let _ = fs::remove_file("test_passwords.db");
+
+        // Recreate the table for testing
+        create_table_if_not_exists();
+    }
+
+    #[test]
+    fn test_create_table() {
+        // Setup: Initialize the test database
+        setup_test_database();
+
+        // Act: Create the table (already handled in setup)
+        create_table_if_not_exists();
+
+        // Assert: Table creation should succeed (no panic expected)
+        assert!(true, "Table creation should not fail.");
+    }
+
+    #[test]
+    fn test_add_and_retrieve_password() {
+        // Setup: Initialize the test database
+        setup_test_database();
+
+        // Arrange
+        let title = "test_entry";
+        let encrypted_password = "test_encrypted_password";
+
+        // Act: Add a password
+        let result = add_password(title, encrypted_password);
+        assert!(
+            result.is_ok(),
+            "Failed to add password: {:?}",
+            result.err()
+        );
+
+        // Act: Retrieve the password
+        let retrieved_password = get_password(title);
+
+        // Assert
+        assert_eq!(
+            retrieved_password,
+            Some(encrypted_password.to_string()),
+            "Retrieved password does not match the expected value."
+        );
+    }
+
+    #[test]
+    fn test_retrieve_nonexistent_password() {
+        // Setup: Initialize the test database
+        setup_test_database();
+
+        // Arrange
+        let title = "nonexistent_title";
+
+        // Act: Attempt to retrieve a nonexistent password
+        let result = get_password(title);
+
+        // Assert: The result should be None
+        assert_eq!(
+            result,
+            None,
+            "Expected None for nonexistent password, but got {:?}",
+            result
+        );
+    }
+
+    #[test]
+    fn test_duplicate_password() {
+        // Setup: Initialize the test database
+        setup_test_database();
+
+        // Arrange
+        let title = "duplicate_entry";
+        let encrypted_password = "test_password";
+
+        // Act: Add the password for the first time
+        let result1 = add_password(title, encrypted_password);
+        assert!(
+            result1.is_ok(),
+            "Failed to add first password: {:?}",
+            result1.err()
+        );
+
+        // Act: Attempt to add the same password again (duplicate)
+        let result2 = add_password(title, encrypted_password);
+
+        // Assert: The second addition should fail
+        assert!(
+            result2.is_err(),
+            "Adding a duplicate password should fail, but succeeded."
+        );
+    }
+
+    #[test]
+    fn test_clean_database() {
+        // Setup: Initialize the test database
+        setup_test_database();
+
+        // Arrange: Add a test entry
+        let title = "clean_test_entry";
+        let encrypted_password = "test_password";
+        let result = add_password(title, encrypted_password);
+        assert!(
+            result.is_ok(),
+            "Failed to add password before cleaning: {:?}",
+            result.err()
+        );
+
+        // Act: Clean the database
+        clean_database();
+
+        // Assert: The entry should no longer exist
+        let retrieved_password = get_password(title);
+        assert_eq!(
+            retrieved_password,
+            None,
+            "Expected database to be empty after cleaning, but found data."
+        );
+    }
+}
+

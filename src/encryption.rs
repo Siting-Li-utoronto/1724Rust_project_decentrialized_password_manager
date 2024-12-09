@@ -42,3 +42,42 @@ pub fn generate_key() -> Key {
     Key::from_slice(b"an example very very secret key.") // 32 bytes
         .expect("Failed to create a static key")
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use sodiumoxide::crypto::secretbox;
+
+    #[test]
+    fn test_encrypt_and_decrypt_password() {
+        // Arrange
+        let key = secretbox::gen_key();
+        let password = "test_password";
+
+        // Act
+        let (encrypted_password, nonce) = encrypt_password(password, &key);
+        let decrypted_password = decrypt_password(&encrypted_password, &nonce, &key)
+            .expect("Decryption should succeed");
+
+        // Assert
+        assert_eq!(decrypted_password, password);
+    }
+
+    #[test]
+    fn test_decrypt_with_invalid_nonce() {
+        // Arrange
+        let key = secretbox::gen_key();
+        let password = "test_password";
+        let (_, _nonce) = encrypt_password(password, &key);
+
+        // Modify nonce
+        let invalid_nonce = "invalid_nonce";
+
+        // Act
+        let result = decrypt_password("invalid_encrypted_data", invalid_nonce, &key);
+
+        // Assert
+        assert!(result.is_err());
+    }
+}

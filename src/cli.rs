@@ -11,7 +11,7 @@ pub fn run_cli() {
         .subcommand(
             // Takes the title and password, checks if they are valid, encrypts the password, and attempts to add it to the database.
             SubCommand::with_name("add")
-                .about("Adds a new password")
+                .about("Adds a new password: cargo run -- add --title/t <example_title> --password/p <example_password>")
                 .arg(
                     Arg::with_name("title")
                         .long("title")
@@ -32,7 +32,7 @@ pub fn run_cli() {
         // Retrieves the password for the given title, decrypts it using the provided nonce, and displays the decrypted password.
         .subcommand(
             SubCommand::with_name("get")
-                .about("Retrieves a password")
+                .about("Retrieves a password: cargo run -- get --title/t <example_title> --nonce/n <your_nonce>")
                 .arg(
                     Arg::with_name("title")
                         .long("title")
@@ -51,7 +51,7 @@ pub fn run_cli() {
         // Cleans the database by dropping and recreating the table.
         .subcommand(
             SubCommand::with_name("clean")
-                .about("Cleans the database by removing all passwords")
+                .about("Cleans the database by removing all passwords: cargo run -- clean")
         )
         .get_matches();
 
