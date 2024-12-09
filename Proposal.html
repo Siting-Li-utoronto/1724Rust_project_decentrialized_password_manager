@@ -1,0 +1,85 @@
+<h1>Project Proposal: Decentralized Password Manager</h1>
+
+<h2>Team Members</h2>
+
+<ul>
+<li><strong>Siting Li</strong> - 1005046335 - lisitin1</li>
+<li><strong>Zifan Meng</strong> - 12345678 - lalalala</li>
+</ul>
+
+<h2>Motivation</h2>
+
+<p>As the need for digital security grows, the flaws and risks of centralized password managers have become clear. Although centralized systems are useful, hackers like them because they only need one place to go wrong for the whole system to stop working. Public hacks have shown how weak these systems are, putting the private information of millions of users at risk and lowering trust in centralized solutions.</p>
+
+<p>Our goal with this project is to make a safe, open password manager that can be used instead of the ones that are currently available. Using a peer-to-peer design lets us spread storage across many devices, so we don't have to rely on a central server. This makes data breaches much less likely. Users have full control over their data with this decentralized method, and sensitive data is never saved in plaintext on any server, which protects privacy.</p>
+
+<p>This job is perfect for Rust because it has memory safety, zero-cost abstractions, and a strong asynchronous ecosystem - all of which are needed to make systems that are safe and work well. Our team can make a fast, decentralized password manager that puts user privacy first using Rust's strong tools for networking and cryptography. In addition, there aren't many decentralized password management solutions in the Rust environment. This project will fill that gap and may help the community as a whole by offering a new, more private way to protect passwords.</p>
+
+<h2>Objective and Key Features</h2>
+
+<h3>Objective</h3>
+
+<p>The primary objective of this project is to design and implement a secure, decentralized password manager that ensures data privacy through a zero-knowledge architecture and end-to-end encryption. This password manager will utilize peer-to-peer (P2P) networking for device syncing, with all sensitive information encrypted before transmission.</p>
+
+<h3>Key Features</h3>
+
+<ol>
+<li><p><strong>End-to-End Encryption</strong>: Strong cryptographic methods will be used to hide user passwords on each device, which will protect data privacy across the network. Sodiumoxide, which is a Rust wrapper around NaCl, a widely used cryptography tool, will be used for encryption.</p></li>
+<li><p><strong>Peer-to-Peer Syncing</strong>: With the <code>libp2p</code> library, devices can talk to each other over a P2P network to keep their secret information in sync. Users won't have to rely on a central computer because they can get to their passwords from any device connected to the network.</p></li>
+<li><p><strong>Command-Line Interface (CLI)</strong>: A CLI will make it easy for users to add, retrieve, and handle passwords. The commands will be easy to understand and follow, just like in the command line, so both coders and power users will be able to use the tool.</p></li>
+<li><p><strong>Zero-Knowledge Architecture</strong>: The password manager will be made using zero-knowledge principles, which means that no one else will be able to see or record the user's plaintext passwords. Each device will only keep the encrypted version of the data. This way, even if the data is stolen, no useful information can be gotten from it.</p></li>
+</ol>
+
+<h2>Tentative Plan</h2>
+
+<p>Our team will split up the work into three key areas so that we can finish the project on time: peer-to-peer networking, encryption and security, and integrating the user interface and database. Here is how our plan is broken down:</p>
+
+<ol>
+<li><p><strong>Peer-to-Peer Networking</strong>:</p>
+
+<ul>
+<li><strong>Assigned Team Member</strong>: Siting Li</li>
+<li><strong>Responsibilities</strong>: 
+<ul>
+<li>Implement decentralized syncing functionality using <code>libp2p</code>.</li>
+<li>Configure peer discovery, secure communication, and file transfer protocols.</li>
+<li>Ensure synchronization of encrypted password data across devices, addressing issues like data consistency and conflict resolution.</li>
+</ul></li>
+</ul></li>
+<li><p><strong>Encryption and Security</strong>:</p>
+
+<ul>
+<li><strong>Assigned Team Member</strong>: Zifan Meng</li>
+<li><strong>Responsibilities</strong>:
+<ul>
+<li>Set up end-to-end encryption using Sodiumoxide for encrypting passwords on the client side.</li>
+<li>Implement secure hashing for the master password with Argon2.</li>
+<li>Conduct security reviews to ensure that data remains secure both in transit and at rest.</li>
+</ul></li>
+</ul></li>
+<li><p><strong>User Interface and Database Integration</strong>:</p>
+
+<ul>
+<li><strong>Shared Responsibility</strong>: Both team members</li>
+<li><strong>Responsibilities</strong>:
+<ul>
+<li>Develop a command-line interface (CLI) using Clap or Structopt for managing passwords.</li>
+<li>Implement password storage using Diesel and SQLite, ensuring the database only holds encrypted data.</li>
+<li>Integrate CLI with database operations, allowing users to easily add, retrieve, and delete passwords from a secure local database.</li>
+<li>Tests covering encryption, database operations, and peer-to-peer syncing.</li>
+</ul></li>
+</ul></li>
+</ol>
+
+<h3>Timeline</h3>
+
+<ol>
+<li><strong>Weeks 1</strong>: Set up project environment, dependencies, and preliminary modules. Develop initial CLI and basic database storage.</li>
+<li><strong>Weeks 2</strong>: Implement encryption functions, and set up peer-to-peer communication. Begin integration between modules.</li>
+<li><strong>Weeks 3-4</strong>: Complete full integration, refine CLI, add error handling, and conduct unit and integration testing.</li>
+<li><strong>Week 5</strong>: Finalize documentation and prepare a video demo.</li>
+</ol>
+
+<h2>Conclusion</h2>
+
+<p>This project aims to fill a notable gap in the Rust ecosystem by providing a decentralized, secure, and zero-knowledge password manager. By dividing tasks among the team and focusing on specific objectives, we are confident in delivering a robust application within the project timeline. The combination of Rust¡¯s safety guarantees, peer-to-peer networking, and encryption libraries offers a unique opportunity to create a highly secure and private solution for password management.</p>
