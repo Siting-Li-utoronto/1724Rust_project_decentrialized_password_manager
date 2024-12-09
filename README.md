@@ -5,7 +5,7 @@ A decentralized password manager built in Rust using SQLite and encryption.
 ## **Team Members**
 
 - **Siting Li** (1005046335) - lisitin1 - siting.li@mail.utoronto.ca
-- **Zifan Meng** (12345678) - lalalala - abbccddee
+- **Zifan Meng** (1005364730) - mengzifa - zifan.meng@mail.utoronto.ca
 
 ---
 
@@ -442,7 +442,7 @@ The following outlines the individual contributions made by each team member to 
 
 ---
 
-### **2. Zifan Meng (12345678)**
+### **2. Zifan Meng (1005364730)**
 
 - **Project Design**:
 - Designed the initial architecture for encryption, database integration, and CLI functionality.
