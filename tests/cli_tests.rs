@@ -138,3 +138,129 @@ fn test_cli_clean_database() {
     // Assert
     assert!(stdout.contains("Database cleaned and reset"));
 }
+
+#[test]
+fn test_cli_modify_password() {
+    // Step 1: Add a new password
+    let add_output = Command::new("cargo")
+        .args(&[
+            "run", "--", "add", "--title", "modify_test", "--password", "old_password",
+        ])
+        .output()
+        .expect("Failed to add password");
+
+    let add_stdout = String::from_utf8(add_output.stdout).expect("Invalid UTF-8 in add output");
+
+    // Extract the nonce from the "add" command output
+    let nonce_line = add_stdout
+        .lines()
+        .find(|line| line.contains("Store this nonce securely:"))
+        .expect("Nonce not found in add command output");
+
+    let old_nonce = nonce_line
+        .split("Store this nonce securely: ")
+        .nth(1)
+        .expect("Failed to extract nonce")
+        .trim();
+
+    // Step 2: Modify the password and capture the new nonce
+    let modify_output = Command::new("cargo")
+        .args(&[
+            "run",
+            "--",
+            "modify",
+            "--title",
+            "modify_test",
+            "--new_password",
+            "new_password",
+            "--nonce",
+            old_nonce,
+        ])
+        .output()
+        .expect("Failed to modify password");
+
+    let modify_stdout = String::from_utf8(modify_output.stdout).expect("Invalid UTF-8 in modify output");
+
+    let new_nonce_line = modify_stdout
+        .lines()
+        .find(|line| line.contains("Store this new nonce securely:"))
+        .expect("New nonce not found in modify command output");
+
+    let new_nonce = new_nonce_line
+        .split("Store this new nonce securely: ")
+        .nth(1)
+        .expect("Failed to extract new nonce")
+        .trim();
+
+    // Step 3: Retrieve the updated password using the new nonce
+    let get_output = Command::new("cargo")
+        .args(&[
+            "run", "--", "get", "--title", "modify_test", "--nonce", new_nonce,
+        ])
+        .output()
+        .expect("Failed to retrieve password");
+
+    let get_stdout = String::from_utf8(get_output.stdout).expect("Invalid UTF-8 in get output");
+
+    // Assert: Verify the updated password
+    assert!(
+        get_stdout.contains("Decrypted password for 'modify_test': new_password"),
+        "Updated password retrieval failed. Output: {}",
+        get_stdout
+    );
+}
+
+#[test]
+fn test_cli_delete_password() {
+    // Step 1: Add a new password
+    let add_output = Command::new("cargo")
+        .args(&[
+            "run", "--", "add", "--title", "delete_test", "--password", "delete_password",
+        ])
+        .output()
+        .expect("Failed to add password");
+
+    let add_stdout = String::from_utf8(add_output.stdout).expect("Invalid UTF-8 in add output");
+
+    // Extract the nonce from the "add" command output
+    let nonce_line = add_stdout
+        .lines()
+        .find(|line| line.contains("Store this nonce securely:"))
+        .expect("Nonce not found in add command output");
+
+    let nonce = nonce_line
+        .split("Store this nonce securely: ")
+        .nth(1)
+        .expect("Failed to extract nonce")
+        .trim();
+
+    // Step 2: Delete the password
+    let delete_output = Command::new("cargo")
+        .args(&[
+            "run", "--", "delete", "--title", "delete_test", "--nonce", nonce,
+        ])
+        .output()
+        .expect("Failed to delete password");
+
+    let delete_stdout = String::from_utf8(delete_output.stdout).expect("Invalid UTF-8 in delete output");
+
+    assert!(
+        delete_stdout.contains("Password with title 'delete_test' has been successfully deleted."),
+        "Failed to delete password"
+    );
+
+    // Step 3: Verify the password no longer exists
+    let get_output = Command::new("cargo")
+        .args(&[
+            "run", "--", "get", "--title", "delete_test", "--nonce", nonce,
+        ])
+        .output()
+        .expect("Failed to retrieve password");
+
+    let get_stdout = String::from_utf8(get_output.stdout).expect("Invalid UTF-8 in get output");
+
+    assert!(
+        get_stdout.contains("No password found for 'delete_test'"),
+        "Password was not deleted successfully"
+    );
+}

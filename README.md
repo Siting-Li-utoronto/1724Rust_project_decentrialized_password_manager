@@ -2,6 +2,51 @@
 
 A decentralized password manager built in Rust using SQLite and encryption.
 
+## **Table of Contents**
+
+[Team Members](#team-members)
+
+[Motivation](#motivation)
+
+[Objectives](#objectives)
+
+[Features](#features)
+
+[User's or Developer's Guide](#user's-or-developer's-guide)
+
+- [Installation](#installation)
+- [Command-Line Interface (CLI) Features](#command-line-interface-cli-features)
+   - [Adding a Password](#adding-a-password)
+   - [Retrieving a Password](#retrieving-a-password)
+   - [Modifying a Password](#modifying-a-password)
+   - [Deleting a Password](#deleting-a-password)
+   - [Cleaning the Database](#cleaning-the-database)
+- [Understanding Encryption and Keys](#understanding-encryption-and-keys)
+
+[Developer Notes](#developer-notes)
+
+- [Code Structure](#code-structure)
+- [Testing](#testing)
+- [Dependencies](#dependencies)
+
+[Error Handling](#error-handling)
+
+[Reproducibility Guide](#reproducibility-guide)
+
+- [Installation](#installation)
+- [Using the CLI Features](#using-the-cli-features)
+- [Testing the Project](#testing-the-project)
+
+[Contributions by Each Team Member](#contributions-by-each-team-member)
+
+- [Siting Li (1005046335)](#siting-li-1005046335)
+- [Zifan Meng (1005364730)](#zifan-meng-1005364730)
+
+[Lessons Learned and Concluding Remarks](#lessons-learned-and-concluding-remarks)
+
+- [Lessons Learned](#lessons-learned)
+- [Concluding Remarks](#concluding-remarks)
+
 ## **Team Members**
 
 - **Siting Li** (1005046335) - lisitin1 - siting.li@mail.utoronto.ca
@@ -91,7 +136,7 @@ These features together create a powerful, secure, and user-friendly decentraliz
 
 ---
 
-## **User's (or Developer's) Guide**
+## **User's or Developer's Guide**
 
 This guide will help users (or developers) understand how to interact with the decentralized password manager, whether using it as an end-user or as a developer working with the source code.
 
@@ -189,7 +234,52 @@ cargo run -- get --title "email_account" --nonce "Base64NonceHere"
 
 ---
 
-#### 2.3 **Cleaning the Database**
+#### 2.3 **Modifying a Password**
+
+To modify a password, it will generate a new nonce and the old one will be deleted:
+
+```bash  
+cargo run -- modify --title "example_title" --new_password "example" --nonce "your_nonce" 
+```
+
+##### **Options:**
+- `--title` or `-t`: Title of the password to retrieve.
+- `--nonce` or `-n`: Nonce required for decryption (provided when you added the password).
+
+##### **Output:**
+If successful:
+
+```text  
+Password updated for 'example_title'. Store this new nonce securely: your_new_nonce_here 
+```
+
+**Note**: The **nonce** is critical for decryption. Save it securely; without it, you cannot retrieve the password.
+
+---
+
+#### 2.4 **Deleting a Password**
+
+To securely delete a password:
+
+```bash
+cargo run -- delete --title "example_title" --nonce "your_nonce"
+```
+
+##### **Options**
+
+- `--title` or `-t`: Title for the password.
+- `--nonce` or `-n`: Nonce required for decryption (provided when you added the password).
+
+##### **Output:**
+If successful, you will see:
+
+```text
+Password with title 'example_title' has been successfully deleted.  
+```
+
+---
+
+#### 2.5 **Cleaning the Database**
 
 To reset the password database by deleting all stored entries:
 
@@ -356,7 +446,53 @@ Decrypted password for 'email_account': myp@ssword123
 
 ---
 
-#### 2.3 **Cleaning the Database**
+#### 2.3 **Modifying a Password**
+
+To modify a password, it will generate a new nonce and the old one will be deleted:
+
+```bash  
+cargo run -- modify --title "example_title" --new_password "example" --nonce "your_nonce" 
+```
+
+##### **Example:**
+
+```bash
+cargo run -- modify --title "email_account" --new_password "myp@ssword456" --nonce "your_old_nonce"
+```
+
+##### **Output:**
+
+```text
+Password updated for 'email_account'. Store this new nonce securely: your_new_nonce_here  
+```
+
+**Note**: The **nonce** is critical for decryption. Save it securely; without it, you cannot retrieve the password.
+
+---
+
+#### 2.4 **Deleting a Password**
+
+To securely delete a password:
+
+```bash
+cargo run -- delete --title "example_title" --nonce "your_nonce"
+```
+
+##### **Example:**
+
+```bash
+cargo run -- delete --title "email_account" --nonce "your_nonce"
+```
+
+##### **Output:**
+
+```text
+Password with title 'example_title' has been successfully deleted.
+```
+
+---
+
+#### 2.5 **Cleaning the Database**
 
 To reset the database (delete all stored passwords), use:
 
@@ -374,7 +510,7 @@ Database cleaned and reset.
 
 ---
 
-#### 2.4 **Testing the Project**
+#### 2.6 **Testing the Project**
 
 ```bash  
 cargo test -- --test-threads=1 
@@ -382,7 +518,7 @@ cargo test -- --test-threads=1
 
 ##### **Output:**
 
-Total 12 testcases:
+Total 14 testcases:
 
 Unit tests:
 
@@ -406,6 +542,8 @@ Integration tests:
 - duplicate password handling
 - get password using title and nonce
 - help command
+- modify password
+- delete password
 ```
 
 The project should pass all tests.

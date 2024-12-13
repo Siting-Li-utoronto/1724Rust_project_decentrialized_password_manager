@@ -95,6 +95,42 @@ pub fn get_password(title: &str) -> Option<String> {
         .expect("Failed to retrieve password")
 }
 
+/// Updates the encrypted password for a given title.
+pub fn update_password(title: &str, new_encrypted_password: &str) -> Result<(), diesel::result::Error> {
+    let connection = establish_connection();
+
+    // Find the password entry by title and update the encrypted password
+    let updated_rows = diesel::update(passwords_dsl::passwords.filter(passwords_dsl::title.eq(title)))
+        .set(passwords_dsl::encrypted_password.eq(new_encrypted_password))
+        .execute(&connection)?;
+
+    // If no rows were updated, return an error
+    if updated_rows == 0 {
+        return Err(diesel::result::Error::NotFound);
+    }
+
+    Ok(())
+}
+
+/// Deletes a password entry by its title.
+/// Returns `Ok(())` if successful, or an error if the title does not exist.
+pub fn delete_password(title: &str) -> Result<(), diesel::result::Error> {
+    let connection = establish_connection();
+
+    // Delete the password where title matches
+    let deleted_rows = diesel::delete(passwords_dsl::passwords.filter(passwords_dsl::title.eq(title)))
+        .execute(&connection)?;
+
+    // If no rows were deleted, return an error
+    if deleted_rows == 0 {
+        return Err(diesel::result::Error::NotFound);
+    }
+
+    Ok(())
+}
+
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
