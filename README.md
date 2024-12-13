@@ -14,13 +14,8 @@ A decentralized password manager built in Rust using SQLite and encryption.
 
 [User's or Developer's Guide](#users-or-developers-guide)
 
-- [Installation](#installation)
+- [Installation Guide](#installation-guide)
 - [Command-Line Interface (CLI) Features](#command-line-interface-cli-features)
-   - [Adding a Password](#adding-a-password)
-   - [Retrieving a Password](#retrieving-a-password)
-   - [Modifying a Password](#modifying-a-password)
-   - [Deleting a Password](#deleting-a-password)
-   - [Cleaning the Database](#cleaning-the-database)
 - [Understanding Encryption and Keys](#understanding-encryption-and-keys)
 
 [Developer Notes](#developer-notes)
@@ -33,17 +28,9 @@ A decentralized password manager built in Rust using SQLite and encryption.
 
 [Reproducibility Guide](#reproducibility-guide)
 
-- [Installation](#installation)
-- [Using the CLI Features](#using-the-cli-features)
-- [Testing the Project](#testing-the-project)
-
 [Contributions by Each Team Member](#contributions-by-each-team-member)
 
-- [Siting Li (1005046335)](#siting-li-1005046335)
-- [Zifan Meng (1005364730)](#zifan-meng-1005364730)
-
 [Lessons Learned and Concluding Remarks](#lessons-learned-and-concluding-remarks)
-
 - [Lessons Learned](#lessons-learned)
 - [Concluding Remarks](#concluding-remarks)
 
@@ -140,7 +127,7 @@ These features together create a powerful, secure, and user-friendly decentraliz
 
 This guide will help users (or developers) understand how to interact with the decentralized password manager, whether using it as an end-user or as a developer working with the source code.
 
-### 1. **Installation**
+### 1. **Installation Guide**
 
 #### **Prerequisites**
 
