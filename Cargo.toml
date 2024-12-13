@@ -9,7 +9,8 @@ test-threads = 1
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-diesel = { version = "1.3.8", features = ["sqlite"] } # SQLite integration
+diesel = { version = "1.3.8", features = ["sqlite", "32-column-tables"] }
+libsqlite3-sys = { version = "0.12.0", features = ["bundled"] }
 clap = { version = "3.2.23", features = ["derive"] } # For CLI commands
 sodiumoxide = "0.2.6" # For encryption
 serde = { version = "1.0.136", features = ["derive"] } # Serialization and deserialization

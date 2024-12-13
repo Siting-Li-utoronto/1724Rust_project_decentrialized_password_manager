@@ -109,7 +109,7 @@ To begin using or contributing to the project, clone the repository and install 
 
 ```bash
 git clone https://github.com/Siting-Li-utoronto/1724Rust_project_decentrialized_password_manager.git
-cd decentralized-password-manager
+cd 1724Rust_project_decentrialized_password_manager
 ```
 
 #### **Build the Project**
@@ -287,7 +287,7 @@ To begin using or contributing to the project, clone the repository and install 
 
 ```bash
 git clone https://github.com/Siting-Li-utoronto/1724Rust_project_decentrialized_password_manager.git
-cd decentralized-password-manager
+cd 1724Rust_project_decentrialized_password_manager
 ```
 
 #### **Build the Project**
