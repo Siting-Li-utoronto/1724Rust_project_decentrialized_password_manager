@@ -14,25 +14,11 @@ A decentralized password manager built in Rust using SQLite and encryption.
 
 [User's or Developer's Guide](#users-or-developers-guide)
 
-- [Installation Guide](#installation-guide)
-- [Command-Line Interface (CLI) Features](#command-line-interface-cli-features)
-- [Understanding Encryption and Keys](#understanding-encryption-and-keys)
-
-[Developer Notes](#developer-notes)
-
-- [Code Structure](#code-structure)
-- [Testing](#testing)
-- [Dependencies](#dependencies)
-
-[Error Handling](#error-handling)
-
 [Reproducibility Guide](#reproducibility-guide)
 
 [Contributions by Each Team Member](#contributions-by-each-team-member)
 
 [Lessons Learned and Concluding Remarks](#lessons-learned-and-concluding-remarks)
-- [Lessons Learned](#lessons-learned)
-- [Concluding Remarks](#concluding-remarks)
 
 ## **Team Members**
 
