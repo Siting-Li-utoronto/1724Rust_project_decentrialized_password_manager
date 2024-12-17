@@ -16,6 +16,8 @@ A decentralized password manager built in Rust using SQLite and encryption.
 
 [Reproducibility Guide](#reproducibility-guide)
 
+[Video Demo](#video-demo)
+
 [Contributions by Each Team Member](#contributions-by-each-team-member)
 
 [Lessons Learned and Concluding Remarks](#lessons-learned-and-concluding-remarks)
@@ -521,7 +523,87 @@ Integration tests:
 
 The project should pass all tests.
 
+
+Tests can also be run individually, while finish running one test case, make sure to use
+
+```bash  
+cargo run -- clean
+```
+
+before moving to the next test case.
+
+Some examples are included:
+
+##### **Add the same password twice:**
+
+```bash  
+cargo run -- add --title "email_account1" --password "myp@ssword123"
+cargo run -- add --title "email_account1" --password "myp@ssword123"
+```
+##### **Output:**
+
+```text
+Failed to add password: A password with the title 'email_account1' already exists.
+```
+##### **Modify password, retrieve using expired nonce:**
+
+```bash  
+cargo run -- add --title "email_account1" --password "myp@ssword123"
+cargo run -- modify --title "email_account1" --new_password "myp@ssword456" --nonce "your_old_nonce1"
+cargo run -- get --title "email_account1" --nonce "your_old_nonce1"
+```
+##### **Output:**
+
+```text
+No password found for 'email_account1'.
+```
+
+##### **Delete password, retrieve using expired nonce:**
+
+```bash  
+cargo run -- add --title "email_account1" --password "myp@ssword123"
+cargo run -- delete --title "email_account1" --nonce "your_old_nonce1"
+cargo run -- get --title "email_account1" --nonce "your_old_nonce1"
+```
+##### **Output:**
+
+```text
+No password found for 'email_account1'.
+```
+
+##### **Clean database, retrieve password:**
+
+```bash  
+cargo run -- add --title "email_account1" --password "myp@ssword123"
+cargo run -- clean
+cargo run -- get --title "email_account1" --nonce "your_nonce"
+```
+##### **Output:**
+
+```text
+No password found for 'email_account1'.
+```
+
+##### **Add password with empty title/password:**
+
+```bash  
+cargo run -- add --title "email_account1" --password ""
+```
+##### **Output:**
+
+```text
+Failed to add password: Password cannot be empty.
+```
+
 ---
+
+## **Video Demo**
+
+https://drive.google.com/drive/folders/13NADcx5j5ocytx3C0TE8pLxTKJkQ876P?usp=sharing
+
+---
+
+
 
 ## **Contributions by Each Team Member**
 
