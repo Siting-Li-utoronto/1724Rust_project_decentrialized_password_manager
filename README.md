@@ -64,12 +64,12 @@ The primary objective of this project is to develop a decentralized and secure p
 The decentralized password manager provides a variety of features designed to ensure secure password management while offering full control to the user. Below are the key features of the final project deliverable:
 
 ### 1. **End-to-End Encryption**
-   - All passwords are encrypted locally on the user¡¯s device using strong cryptographic algorithms before being stored or transmitted over the network.
+   - All passwords are encrypted locally on the user's device using strong cryptographic algorithms before being stored or transmitted over the network.
    - The Sodiumoxide library, a Rust wrapper around NaCl (a high-level cryptography library), is used to perform encryption and decryption operations.
    - Passwords are encrypted with a unique nonce (number used once), ensuring that each encryption is distinct and preventing certain types of cryptographic attacks.
 
 ### 2. **Zero-Knowledge Architecture**
-   - The password manager uses a **zero-knowledge** model, meaning that even the system¡¯s creators or administrators do not have access to the users' plaintext passwords.
+   - The password manager uses a **zero-knowledge** model, meaning that even the system's creators or administrators do not have access to the users' plaintext passwords.
    - Only the user can decrypt their passwords using their unique cryptographic keys, ensuring that sensitive data remains private, even if the system is compromised.
 
 ### 3. **Peer-to-Peer (P2P) Synchronization**
@@ -539,6 +539,7 @@ Some examples are included:
 ```bash  
 cargo run -- add --title "email_account1" --password "myp@ssword123"
 cargo run -- add --title "email_account1" --password "myp@ssword123"
+cargo run -- -- clean
 ```
 ##### **Output:**
 
@@ -551,6 +552,7 @@ Failed to add password: A password with the title 'email_account1' already exist
 cargo run -- add --title "email_account1" --password "myp@ssword123"
 cargo run -- modify --title "email_account1" --new_password "myp@ssword456" --nonce "your_old_nonce1"
 cargo run -- get --title "email_account1" --nonce "your_old_nonce1"
+cargo run -- -- clean
 ```
 ##### **Output:**
 
@@ -564,6 +566,7 @@ No password found for 'email_account1'.
 cargo run -- add --title "email_account1" --password "myp@ssword123"
 cargo run -- delete --title "email_account1" --nonce "your_old_nonce1"
 cargo run -- get --title "email_account1" --nonce "your_old_nonce1"
+cargo run -- -- clean
 ```
 ##### **Output:**
 
